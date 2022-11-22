@@ -6,6 +6,7 @@ import { Request, NextFunction, Response } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { S3Client } from "@aws-sdk/client-s3";
 import multerS3 from "multer-s3";
+import User from "../modals/user";
 
 export const s3Config = new S3Client({
   region: "us-west-1",
@@ -38,6 +39,7 @@ export const upload = multer({
   storage: multerS3({
     s3: s3Config,
     bucket: "mini-test-dashboard",
+    contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
@@ -52,6 +54,7 @@ export const uploadVideo = multer({
   storage: multerS3({
     s3: s3Config,
     bucket: "mini-test-dashboard",
+    contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
@@ -65,20 +68,24 @@ export interface IRequest extends Request {
   userId: any;
 }
 
-export const tokenMiddleware = (
+export const tokenMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
+): Promise<void> => {
   const token = req.headers.authorization?.split(" ")[1] as string;
   try {
     const userId = jwt.verify(
       token,
       process.env.PRIVATE_KEY as string
     ) as jwt.JwtPayload;
-
-    req.userId = userId._id;
-    next();
+    let user = await User.findById(userId._id);
+    if (!user) {
+      res.status(400).json({ error: "wrong credentials" });
+    } else {
+      req.userId = userId._id;
+      next();
+    }
   } catch (error: any) {
     // console.log(error)
     let errors = error as JsonWebTokenError;

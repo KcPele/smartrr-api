@@ -28,11 +28,11 @@ async function loginUser(email: string, password: string) {
   //were to use bycript an jsonwebtokek
   const user = await User.findOne({ email });
   if (!user) {
-    return { error: "Wrong credentials please try again" };
+    throw new Error("Wrong credentials please try again");
   } else {
     const comparedPass = await bcrypt.compare(password, user.password);
     if (!comparedPass) {
-      return { error: "wrong credentials, please try again" };
+      throw new Error("Wrong credentials please try again");
     } else {
       const token = jwt.sign({ _id: user._id }, privateKey as string, {
         expiresIn: 60 * 60 * 48,

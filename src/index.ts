@@ -50,15 +50,14 @@ const PORT: number = parseInt(process.env.PORT as string, 10);
 
 const app = express();
 app.use(helmet());
-app.use(
-  cors({
-    allowedHeaders: ["sessionId", "Content-Type"],
-    exposedHeaders: ["sessionId"],
-    origin: "http://localhost:4000",
-    methods: "GET,HEAD,PUT,POST,DELETE",
-    preflightContinue: false,
-  })
-);
+app.use(cors());
+// {
+//   allowedHeaders: ["sessionId", "Content-Type"],
+//   exposedHeaders: ["sessionId"],
+//   origin: "*",
+//   methods: "GET,HEAD,PUT,POST,DELETE",
+//   preflightContinue: false,
+// }
 app.use(express.json());
 
 app.use("/user", userRoutes);

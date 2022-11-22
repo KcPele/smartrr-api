@@ -12,6 +12,13 @@ const getAllVideo = asyncHandler(
     res.status(200).json({ videos });
   }
 );
+const getVideo = asyncHandler(
+  async (req: express.Request, res: express.Response) => {
+    const { id } = req.query;
+    let videos = (await Video.findById(id)) as IVideo;
+    res.status(200).json({ videos });
+  }
+);
 
 interface MulterFile extends Express.Multer.File {
   location: String;
@@ -62,6 +69,7 @@ const updateVideo = asyncHandler(
 const deleteVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { id } = req.query;
+    console.log(id);
     let query = { _id: id, owner: req.userId };
     Video.findOneAndDelete(query)
       .then((video) => {
@@ -74,4 +82,4 @@ const deleteVideo = asyncHandler(
   }
 );
 
-export { getAllVideo, createVideo, updateVideo, deleteVideo };
+export { getAllVideo, getVideo, createVideo, updateVideo, deleteVideo };
