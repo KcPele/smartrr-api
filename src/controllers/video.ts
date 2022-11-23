@@ -8,14 +8,16 @@ import { s3DeleteHelper } from "../middleware";
 
 const getAllVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    let videos = (await Video.find({})) as [IVideo?];
+    let videos = await Video.find().populate("category");
+
     res.status(200).json({ videos });
   }
 );
 const getVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { id } = req.query;
-    let videos = (await Video.findById(id)) as IVideo;
+    let videos = await Video.findById(id).populate("category");
+    await Video.updateOne({ _id: id }, { $inc: { play: 1 } }, { new: true });
     res.status(200).json({ videos });
   }
 );
@@ -26,7 +28,8 @@ interface MulterFile extends Express.Multer.File {
 }
 
 const createVideo = async (req: express.Request, res: express.Response) => {
-  const { title } = req.body;
+  const { title, category } = req.body;
+  // let category = await Category.findById(categoryId);
   if (!req.file) return res.status(400).json({ error: "no file selected" });
   let file = req.file as MulterFile;
   let key = file.key;
@@ -36,7 +39,10 @@ const createVideo = async (req: express.Request, res: express.Response) => {
     const video = await Video.create({
       title,
       key,
+      play: 0,
+      rating: 0,
       url,
+      category,
       owner,
     });
     res.status(200).json(video);
@@ -48,8 +54,8 @@ const createVideo = async (req: express.Request, res: express.Response) => {
 const updateVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { id } = req.query;
-    const { title } = req.body;
-    const update = { title } as unknown as IVideo;
+    const { title, rating, category } = req.body;
+    const update = { title, rating, category } as unknown as IVideo;
     if (req.file) {
       let video = await Video.findById(id);
       s3DeleteHelper(video?.key as string);

@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/user";
 import productRoutes from "./routes/products";
 import videoRoutes from "./routes/video";
+import categoryRoute from "./routes/category";
 dotenv.config();
 
 declare global {
@@ -63,6 +64,7 @@ app.use(express.json());
 app.use("/user", userRoutes);
 app.use("/videos", videoRoutes);
 app.use("/products", productRoutes);
+app.use("/categories", categoryRoute);
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
