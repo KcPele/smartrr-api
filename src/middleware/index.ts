@@ -29,26 +29,12 @@ export const s3DeleteHelper = (key: string) => {
       Key: key,
     },
     (err, data) => {
-      console.error("err", err);
-      console.log(data);
+      if (err) {
+        console.error("err", err);
+      }
     }
   );
 };
-
-export const upload = multer({
-  storage: multerS3({
-    s3: s3Config,
-    bucket: "mini-test-dashboard",
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    // Key: `userAvatar/${req.file.originalname}`
-    key: function (req, file, cb) {
-      cb(null, "images/" + Date.now().toString() + "-" + file.originalname);
-    },
-  }),
-});
 
 export const uploadVideo = multer({
   storage: multerS3({
@@ -64,6 +50,19 @@ export const uploadVideo = multer({
   }),
 });
 
+export const upload = multer({
+  storage: multerS3({
+    s3: s3Config,
+    bucket: "mini-test-dashboard",
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, "images/" + Date.now().toString() + "-" + file.originalname);
+    },
+  }),
+});
 export interface IRequest extends Request {
   userId: any;
 }

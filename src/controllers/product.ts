@@ -1,5 +1,5 @@
 import express from "express";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import User from "../modals/user";
 import asyncHandler from "express-async-handler";
 
@@ -25,7 +25,10 @@ const createProduct = asyncHandler(
     if (req.files) {
       let files = req.files as any[];
       imgUrl = files?.reduce(
-        (acc, image) => [...acc, { key: image.key, url: image.location }],
+        (acc, image) => [
+          ...acc,
+          { key: image.key, url: image.location, imgName: image.originalname },
+        ],
         []
       );
     }
@@ -57,7 +60,11 @@ const updateProduct = asyncHandler(
         res.status(400).json({ error: "Cannot upload more than 5 images" });
       let files = req.files as any[];
       files.map((image) => {
-        product?.imgUrl.push({ key: image.key, url: image.location });
+        product?.imgUrl.push({
+          key: image.key,
+          url: image.location,
+          imgName: image.originalname,
+        });
       });
       product?.save();
     }
@@ -88,4 +95,30 @@ const deleteProduct = asyncHandler(
   }
 );
 
-export { getAllProduct, createProduct, updateProduct, deleteProduct };
+const deleteProductImage = asyncHandler(
+  async (req: express.Request, res: express.Response) => {
+    const { productId, imgKey, imgId } = req.query;
+
+    Product.updateOne(
+      { _id: productId },
+      { $pull: { imgUrl: { _id: imgId } } },
+      function (err: any, numAffected: any) {
+        if (err) {
+          console.log(err);
+          res.status(400).json(err);
+        } else {
+          s3DeleteHelper(imgKey as string);
+          res.status(200).json("successful");
+        }
+      }
+    );
+  }
+);
+
+export {
+  getAllProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  deleteProductImage,
+};

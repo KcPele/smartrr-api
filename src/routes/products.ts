@@ -4,6 +4,7 @@ import {
   deleteProduct,
   getAllProduct,
   updateProduct,
+  deleteProductImage,
 } from "../controllers/product";
 import { tokenMiddleware, upload } from "../middleware";
 
@@ -16,5 +17,6 @@ router.post("/", tokenMiddleware, upload.array("file", 5), createProduct);
 router.put("/", tokenMiddleware, upload.array("file", 5), updateProduct);
 
 router.delete("/", tokenMiddleware, deleteProduct);
+router.delete("/product-image", tokenMiddleware, deleteProductImage);
 
 export default router;

@@ -34,6 +34,8 @@ const createVideo = async (req: express.Request, res: express.Response) => {
   let file = req.file as MulterFile;
   let key = file.key;
   let url = file.location;
+  let imgName = file.originalname;
+
   try {
     const owner = await User.findById(req.userId);
     const video = await Video.create({
@@ -42,6 +44,7 @@ const createVideo = async (req: express.Request, res: express.Response) => {
       play: 0,
       rating: 0,
       url,
+      imgName,
       category,
       owner,
     });
@@ -62,6 +65,7 @@ const updateVideo = asyncHandler(
       let file = req.file as MulterFile;
       update.key = file.key as string;
       update.url = file.location as string;
+      update.imgName = file.originalname as string;
     }
 
     let query = { _id: id, owner: req.userId };
@@ -75,7 +79,6 @@ const updateVideo = asyncHandler(
 const deleteVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { id } = req.query;
-    console.log(id);
     let query = { _id: id, owner: req.userId };
     Video.findOneAndDelete(query)
       .then((video) => {

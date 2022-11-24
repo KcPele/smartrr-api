@@ -3,6 +3,7 @@ const videoSchema = new Schema({
   title: { type: String, required: true },
   key: { type: String, required: true },
   url: { type: String, required: true },
+  imgName: { type: String },
   play: { type: Number },
   rating: { type: Number },
   category: { type: Schema.Types.ObjectId, ref: "Category" },

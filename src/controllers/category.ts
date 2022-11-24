@@ -27,4 +27,33 @@ const createCategory = asyncHandler(
   }
 );
 
-export { getAllCategory, createCategory };
+const updateCategory = asyncHandler(
+  async (req: express.Request, res: express.Response) => {
+    const { id } = req.query;
+    const { name } = req.body;
+    const update = { name } as unknown as ICategory;
+  
+
+    let query = { _id: id };
+    let category = await Category.findOneAndUpdate(query, update, {
+      new: true,
+    });
+    res.status(200).json(category);
+  }
+);
+
+const deleteCategory = asyncHandler(
+  async (req: express.Request, res: express.Response) => {
+    const { id } = req.query;
+    let query = { _id: id };
+    Category.findOneAndDelete(query)
+      .then((category) => {
+        res.status(200).json(category);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  }
+);
+
+export { getAllCategory, createCategory, deleteCategory, updateCategory };

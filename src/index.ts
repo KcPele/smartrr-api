@@ -7,6 +7,7 @@ import userRoutes from "./routes/user";
 import productRoutes from "./routes/products";
 import videoRoutes from "./routes/video";
 import categoryRoute from "./routes/category";
+import multer, { Multer } from "multer";
 dotenv.config();
 
 declare global {
