@@ -17,7 +17,7 @@ const getVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { id } = req.query;
     let videos = await Video.findById(id).populate("category");
-    await Video.updateOne({ _id: id }, { $inc: { play: 1 } }, { new: true });
+    await Video.updateOne({ _id: id }, { $inc: { views: 1 } }, { new: true });
     res.status(200).json({ videos });
   }
 );
@@ -28,23 +28,34 @@ interface MulterFile extends Express.Multer.File {
 }
 
 const createVideo = async (req: express.Request, res: express.Response) => {
-  const { title, category } = req.body;
-  // let category = await Category.findById(categoryId);
-  if (!req.file) return res.status(400).json({ error: "no file selected" });
-  let file = req.file as MulterFile;
-  let key = file.key;
-  let url = file.location;
-  let imgName = file.originalname;
+  const { title, category, description } = req.body;
+
+  if (!req.files) return res.status(400).json({ error: "no file selected" });
+  let files = req.files as any;
+  if (!files.thumbnail)
+    return res.status(400).json({ error: "no thumbnail selected" });
+  if (!files.video) return res.status(400).json({ error: "no video selected" });
+
+  let videoKey = files.video[0].key;
+  let videoUrl = files.video[0].location;
+  let videoName = files.video[0].originalname;
+  let thumbnailKey = files.thumbnail[0].key;
+  let thumbnailUrl = files.thumbnail[0].location;
+  let thumbnailName = files.thumbnail[0].originalname;
 
   try {
     const owner = await User.findById(req.userId);
     const video = await Video.create({
       title,
-      key,
-      play: 0,
+      videoKey,
+      videoName,
+      videoUrl,
+      views: 0,
       rating: 0,
-      url,
-      imgName,
+      thumbnailKey,
+      thumbnailName,
+      thumbnailUrl,
+      description,
       category,
       owner,
     });
@@ -57,15 +68,29 @@ const createVideo = async (req: express.Request, res: express.Response) => {
 const updateVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { id } = req.query;
-    const { title, rating, category } = req.body;
-    const update = { title, rating, category } as unknown as IVideo;
-    if (req.file) {
-      let video = await Video.findById(id);
-      s3DeleteHelper(video?.key as string);
-      let file = req.file as MulterFile;
-      update.key = file.key as string;
-      update.url = file.location as string;
-      update.imgName = file.originalname as string;
+    const { title, rating, category, description } = req.body;
+    const update = {
+      title,
+      rating,
+      category,
+      description,
+    } as unknown as IVideo;
+    if (req.files) {
+      let files = req.files as any;
+      if (files?.thumbnail) {
+        let video = await Video.findById(id);
+        s3DeleteHelper(video?.thumbnailKey as string);
+        update.thumbnailKey = files.thumbnail[0].key as string;
+        update.thumbnailUrl = files.thumbnail[0].location as string;
+        update.thumbnailName = files.thumbnail[0].originalname as string;
+      }
+      if (files?.video) {
+        let video = await Video.findById(id);
+        s3DeleteHelper(video?.videoKey as string);
+        update.videoKey = files.video[0].key as string;
+        update.videoUrl = files.video[0].location as string;
+        update.videoName = files.video[0].originalname as string;
+      }
     }
 
     let query = { _id: id, owner: req.userId };
@@ -82,7 +107,8 @@ const deleteVideo = asyncHandler(
     let query = { _id: id, owner: req.userId };
     Video.findOneAndDelete(query)
       .then((video) => {
-        s3DeleteHelper(video?.key as string);
+        s3DeleteHelper(video?.videoKey as string);
+        s3DeleteHelper(video?.thumbnailKey as string);
         res.status(200).json(video);
       })
       .catch((err) => {
