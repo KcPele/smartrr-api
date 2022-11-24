@@ -9,7 +9,7 @@ const productSchema = new Schema({
       imgName: { type: String },
     },
   ],
-  desc: { type: String, required: true },
+  description: { type: String, required: true },
   owner: { type: Schema.Types.ObjectId, ref: "User" },
 });
 

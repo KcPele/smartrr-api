@@ -11,7 +11,7 @@ import { tokenMiddleware, uploadVideo } from "../middleware";
 const router = express.Router();
 
 router.get("/", getAllVideo);
-router.get("/video", getVideo);
+router.get("/:videoId", getVideo);
 router.post(
   "/",
   tokenMiddleware,

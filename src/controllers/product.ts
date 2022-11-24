@@ -13,14 +13,18 @@ const getAllProduct = asyncHandler(
   }
 );
 
-interface MulterFile extends Express.Multer.File {
-  location: String;
-  key: String;
-}
+const getProduct = asyncHandler(
+  async (req: express.Request, res: express.Response) => {
+    let product = (await Product.findById(req.params?.productId)) as IProduct;
+    res.status(200).json({ product });
+  }
+);
+
+
 
 const createProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { name, price, desc } = req.body;
+    const { name, price, description } = req.body;
     let imgUrl = [];
     if (req.files) {
       let files = req.files as any[];
@@ -38,7 +42,7 @@ const createProduct = asyncHandler(
         name,
         price,
         imgUrl,
-        desc,
+        description,
         owner,
       });
       res.status(200).json(product);
@@ -51,8 +55,8 @@ const createProduct = asyncHandler(
 const updateProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { id } = req.query;
-    const { name, price, desc } = req.body;
-    const update = { name, price, desc } as unknown as IProduct;
+    const { name, price, description } = req.body;
+    const update = { name, price, description } as unknown as IProduct;
     if (req.files) {
       let product = await Product.findById(id);
       let imgLength = product?.imgUrl.length as Number;
@@ -117,6 +121,7 @@ const deleteProductImage = asyncHandler(
 
 export {
   getAllProduct,
+  getProduct,
   createProduct,
   updateProduct,
   deleteProduct,
