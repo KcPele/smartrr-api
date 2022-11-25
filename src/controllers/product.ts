@@ -20,8 +20,6 @@ const getProduct = asyncHandler(
   }
 );
 
-
-
 const createProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { name, price, description } = req.body;
@@ -54,7 +52,7 @@ const createProduct = asyncHandler(
 
 const updateProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { id } = req.query;
+    let id = req.params?.productId;
     const { name, price, description } = req.body;
     const update = { name, price, description } as unknown as IProduct;
     if (req.files) {
@@ -83,7 +81,8 @@ const updateProduct = asyncHandler(
 
 const deleteProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { id } = req.query;
+    let id = req.params?.productId;
+    console.log(id);
 
     let query = { _id: id, owner: req.userId };
     Product.findOneAndDelete(query)
@@ -99,25 +98,26 @@ const deleteProduct = asyncHandler(
   }
 );
 
-const deleteProductImage = asyncHandler(
-  async (req: express.Request, res: express.Response) => {
-    const { productId, imgKey, imgId } = req.query;
-
-    Product.updateOne(
-      { _id: productId },
-      { $pull: { imgUrl: { _id: imgId } } },
-      function (err: any, numAffected: any) {
-        if (err) {
-          console.log(err);
-          res.status(400).json(err);
-        } else {
-          s3DeleteHelper(imgKey as string);
-          res.status(200).json("successful");
-        }
+const deleteProductImage = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const { productId, imgKey, imgId } = req.params;
+  console.log(productId);
+  Product.updateOne(
+    { _id: productId },
+    { $pull: { imgUrl: { _id: imgId } } },
+    function (err: any, numAffected: any) {
+      if (err) {
+        console.log(err);
+        res.status(400).json(err);
+      } else {
+        s3DeleteHelper(imgKey as string);
+        res.status(200).json("successful");
       }
-    );
-  }
-);
+    }
+  );
+};
 
 export {
   getAllProduct,
