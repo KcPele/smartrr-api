@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv";
+// import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -8,7 +8,7 @@ import productRoutes from "./routes/products";
 import videoRoutes from "./routes/video";
 import categoryRoute from "./routes/category";
 import multer, { Multer } from "multer";
-dotenv.config();
+// dotenv.config();
 
 declare global {
   export namespace Express {
