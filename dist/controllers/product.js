@@ -46,7 +46,8 @@ const createProduct = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.createProduct = createProduct;
 const updateProduct = (0, express_async_handler_1.default)(async (req, res) => {
-    const { id } = req.query;
+    var _a;
+    let id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.productId;
     const { name, price, description } = req.body;
     const update = { name, price, description };
     if (req.files) {
@@ -72,7 +73,9 @@ const updateProduct = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.updateProduct = updateProduct;
 const deleteProduct = (0, express_async_handler_1.default)(async (req, res) => {
-    const { id } = req.query;
+    var _a;
+    let id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.productId;
+    console.log(id);
     let query = { _id: id, owner: req.userId };
     product_1.default.findOneAndDelete(query)
         .then((product) => {
@@ -86,8 +89,9 @@ const deleteProduct = (0, express_async_handler_1.default)(async (req, res) => {
     });
 });
 exports.deleteProduct = deleteProduct;
-const deleteProductImage = (0, express_async_handler_1.default)(async (req, res) => {
-    const { productId, imgKey, imgId } = req.query;
+const deleteProductImage = async (req, res) => {
+    const { productId, imgKey, imgId } = req.params;
+    console.log(productId);
     product_1.default.updateOne({ _id: productId }, { $pull: { imgUrl: { _id: imgId } } }, function (err, numAffected) {
         if (err) {
             console.log(err);
@@ -98,6 +102,6 @@ const deleteProductImage = (0, express_async_handler_1.default)(async (req, res)
             res.status(200).json("successful");
         }
     });
-});
+};
 exports.deleteProductImage = deleteProductImage;
 //# sourceMappingURL=product.js.map

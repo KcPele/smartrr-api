@@ -63,29 +63,35 @@ const createVideo = async (req: express.Request, res: express.Response) => {
 
 const updateVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { id } = req.query;
+    let id = req.params?.videoId;
     const { title, rating, category, description } = req.body;
     const update = {
       title,
       rating,
       category,
       description,
-    } as unknown as IVideo;
+    } as IVideo;
     if (req.files) {
       let files = req.files as any;
       if (files?.thumbnail) {
         let video = await Video.findById(id);
         s3DeleteHelper(video?.thumbnail?.key as string);
-        update.thumbnail!.key = files.thumbnail[0].key as string;
-        update.thumbnail!.url = files.thumbnail[0].location as string;
-        update.thumbnail!.name = files.thumbnail[0].originalname as string;
+        let thumbnail = {
+          key: files.thumbnail[0].key,
+          url: files.thumbnail[0].location,
+          name: files.thumbnail[0].originalname,
+        };
+        update.thumbnail = thumbnail;
       }
       if (files?.video) {
         let video = await Video.findById(id);
         s3DeleteHelper(video?.video?.key as string);
-        update.video!.key = files.video[0].key as string;
-        update.video!.url = files.video[0].location as string;
-        update.video!.name = files.video[0].originalname as string;
+        let vid = {
+          key: files.video[0].key,
+          url: files.video[0].location,
+          name: files.video[0].originalname,
+        };
+        update.video = vid;
       }
     }
 
@@ -99,7 +105,7 @@ const updateVideo = asyncHandler(
 
 const deleteVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { id } = req.query;
+    let id = req.params?.videoId;
     let query = { _id: id, owner: req.userId };
     Video.findOneAndDelete(query)
       .then((video) => {

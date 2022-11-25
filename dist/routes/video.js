@@ -13,10 +13,10 @@ router.post("/", middleware_1.tokenMiddleware, middleware_1.uploadVideo.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "video", maxCount: 1 },
 ]), video_1.createVideo);
-router.put("/", middleware_1.tokenMiddleware, middleware_1.uploadVideo.fields([
+router.put("/:videoId", middleware_1.tokenMiddleware, middleware_1.uploadVideo.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "video", maxCount: 1 },
 ]), video_1.updateVideo);
-router.delete("/", middleware_1.tokenMiddleware, video_1.deleteVideo);
+router.delete("/:videoId", middleware_1.tokenMiddleware, video_1.deleteVideo);
 exports.default = router;
 //# sourceMappingURL=video.js.map

@@ -23,7 +23,7 @@ router.post(
 );
 
 router.put(
-  "/",
+  "/:videoId",
   tokenMiddleware,
   uploadVideo.fields([
     { name: "thumbnail", maxCount: 1 },
@@ -32,6 +32,6 @@ router.put(
   updateVideo
 );
 
-router.delete("/", tokenMiddleware, deleteVideo);
+router.delete("/:videoId", tokenMiddleware, deleteVideo);
 
 export default router;
