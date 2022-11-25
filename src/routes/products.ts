@@ -4,7 +4,6 @@ import {
   deleteProduct,
   getAllProduct,
   updateProduct,
-  deleteProductImage,
   getProduct,
 } from "../controllers/product";
 import { tokenMiddleware, upload } from "../middleware";
@@ -22,11 +21,6 @@ router.put(
   updateProduct
 );
 
-router.delete(
-  "/:productId/:imgId/:imgKey",
-  tokenMiddleware,
-  deleteProductImage
-);
 router.delete("/:productId", tokenMiddleware, deleteProduct);
 
 export default router;

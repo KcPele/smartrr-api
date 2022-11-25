@@ -7,6 +7,7 @@ import userRoutes from "./routes/user";
 import productRoutes from "./routes/products";
 import videoRoutes from "./routes/video";
 import categoryRoute from "./routes/category";
+import imageDeleteRoute from "./routes/deleteImage";
 import multer, { Multer } from "multer";
 dotenv.config();
 
@@ -64,6 +65,7 @@ app.use(express.json());
 
 app.use("/user", userRoutes);
 app.use("/videos", videoRoutes);
+app.use("/remove", imageDeleteRoute);
 app.use("/products", productRoutes);
 app.use("/categories", categoryRoute);
 app.listen(PORT, () => {
