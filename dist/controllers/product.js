@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProductImage = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProduct = exports.getAllProduct = void 0;
+exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProduct = exports.getAllProduct = void 0;
 const user_1 = __importDefault(require("../modals/user"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const product_1 = __importDefault(require("../modals/product"));
@@ -89,19 +89,4 @@ const deleteProduct = (0, express_async_handler_1.default)(async (req, res) => {
     });
 });
 exports.deleteProduct = deleteProduct;
-const deleteProductImage = async (req, res) => {
-    const { productId, imgKey, imgId } = req.params;
-    console.log(productId);
-    product_1.default.updateOne({ _id: productId }, { $pull: { imgUrl: { _id: imgId } } }, function (err, numAffected) {
-        if (err) {
-            console.log(err);
-            res.status(400).json(err);
-        }
-        else {
-            (0, middleware_1.s3DeleteHelper)(imgKey);
-            res.status(200).json("successful");
-        }
-    });
-};
-exports.deleteProductImage = deleteProductImage;
 //# sourceMappingURL=product.js.map
