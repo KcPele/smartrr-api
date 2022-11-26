@@ -8,7 +8,9 @@ import { s3DeleteHelper } from "../middleware";
 
 const getAllVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    let videos = await Video.find().populate("category").sort("-createdAt");
+    let videos = await Video.find()
+      .populate("category")
+      .sort({ updatedAt: -1 });
 
     res.status(200).json({ videos });
   }
