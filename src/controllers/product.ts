@@ -8,7 +8,7 @@ import { s3DeleteHelper } from "../middleware";
 
 const getAllProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    let products = (await Product.find({})) as [IProduct?];
+    let products = await Product.find({}).sort("-createdAt");
     res.status(200).json({ products });
   }
 );

@@ -9,7 +9,7 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 const video_1 = __importDefault(require("../modals/video"));
 const middleware_1 = require("../middleware");
 const getAllVideo = (0, express_async_handler_1.default)(async (req, res) => {
-    let videos = await video_1.default.find().populate("category");
+    let videos = await video_1.default.find().populate("category").sort("-createdAt");
     res.status(200).json({ videos });
 });
 exports.getAllVideo = getAllVideo;
