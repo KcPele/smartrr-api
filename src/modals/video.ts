@@ -3,6 +3,7 @@ const videoSchema = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
+    author: { type: String },
 
     thumbnail: {
       key: { type: String, required: true },

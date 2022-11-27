@@ -5,12 +5,21 @@ import asyncHandler from "express-async-handler";
 
 import Video, { IVideo } from "../modals/video";
 import { s3DeleteHelper } from "../middleware";
+import Category from "../modals/category";
 
 const getAllVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    let videos = await Video.find()
+    let searchQuery: any = {};
+
+    if (req.query.category) {
+      searchQuery.category = {
+        _id: req.query.category,
+      };
+    }
+
+    let videos = await Video.find(searchQuery)
       .populate("category")
-      .sort({ updatedAt: -1 });
+      .sort({ createdAt: -1 });
 
     res.status(200).json({ videos });
   }
