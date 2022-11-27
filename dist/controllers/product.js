@@ -9,7 +9,7 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 const product_1 = __importDefault(require("../modals/product"));
 const middleware_1 = require("../middleware");
 const getAllProduct = (0, express_async_handler_1.default)(async (req, res) => {
-    let products = (await product_1.default.find({}));
+    let products = await product_1.default.find({}).sort({ updatedAt: -1 });
     res.status(200).json({ products });
 });
 exports.getAllProduct = getAllProduct;
