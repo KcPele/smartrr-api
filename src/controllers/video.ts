@@ -34,7 +34,7 @@ const getVideo = asyncHandler(
 );
 
 const createVideo = async (req: express.Request, res: express.Response) => {
-  const { title, category, description } = req.body;
+  const { title, category, author, description } = req.body;
 
   if (!req.files) return res.status(400).json({ error: "no file selected" });
   let files = req.files as any;
@@ -57,7 +57,7 @@ const createVideo = async (req: express.Request, res: express.Response) => {
     const owner = await User.findById(req.userId);
     const video = await Video.create({
       title,
-
+      author,
       views: 0,
       rating: 0,
       video: vid,
@@ -75,9 +75,10 @@ const createVideo = async (req: express.Request, res: express.Response) => {
 const updateVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     let id = req.params?.videoId;
-    const { title, rating, category, description } = req.body;
+    const { title, rating, author, category, description } = req.body;
     const update = {
       title,
+      author,
       rating,
       category,
       description,
