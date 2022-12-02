@@ -1,4 +1,4 @@
-// import * as dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -8,8 +8,8 @@ import productRoutes from "./routes/products";
 import videoRoutes from "./routes/video";
 import categoryRoute from "./routes/category";
 import imageDeleteRoute from "./routes/deleteImage";
+import productItemRoute from "./routes/deleteProductItems";
 import orderRoute from "./routes/order";
-
 dotenv.config();
 
 declare global {
@@ -70,6 +70,7 @@ app.use("/videos", videoRoutes);
 app.use("/products", productRoutes);
 app.use("/remove", imageDeleteRoute);
 app.use("/categories", categoryRoute);
+app.use("/remove-item", productItemRoute);
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });

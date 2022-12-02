@@ -1,5 +1,5 @@
-// import * as dotenv from "dotenv";
-// dotenv.config();
+import * as dotenv from "dotenv";
+dotenv.config();
 import aws from "aws-sdk";
 import multer from "multer";
 import { Request, NextFunction, Response } from "express";

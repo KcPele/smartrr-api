@@ -9,16 +9,15 @@ const middleware_1 = require("../middleware");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const router = express_1.default.Router();
 router.delete("/", middleware_1.tokenMiddleware, (0, express_async_handler_1.default)(async (req, res) => {
-    const { productId, imgKey, imgId } = req.query;
-    product_1.default.updateOne({ _id: productId }, { $pull: { imgUrl: { _id: imgId } } }, function (err, numAffected) {
+    const { productId, itemId } = req.query;
+    product_1.default.updateOne({ _id: productId }, { $pull: { items: { _id: itemId } } }, function (err, numAffected) {
         if (err) {
             res.status(400).json(err);
         }
         else {
-            (0, middleware_1.s3DeleteHelper)(imgKey);
             res.status(200).json("successful");
         }
     });
 }));
 exports.default = router;
-//# sourceMappingURL=deleteImage.js.map
+//# sourceMappingURL=deleteProductItems.js.map
