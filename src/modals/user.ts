@@ -1,6 +1,6 @@
-import * as dotenv from "dotenv";
+// import * as dotenv from "dotenv";
 import validation from "validator";
-dotenv.config();
+// dotenv.config();
 import { Model, Schema, HydratedDocument, model } from "mongoose";
 import { createNewUser, loginUser } from "../controllers/user";
 

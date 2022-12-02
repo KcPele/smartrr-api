@@ -1,5 +1,5 @@
-import * as dotenv from "dotenv";
-dotenv.config();
+// import * as dotenv from "dotenv";
+// dotenv.config();
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../modals/user";
