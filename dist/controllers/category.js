@@ -27,10 +27,10 @@ const createCategory = (0, express_async_handler_1.default)(async (req, res) => 
 });
 exports.createCategory = createCategory;
 const updateCategory = (0, express_async_handler_1.default)(async (req, res) => {
-    const { id } = req.query;
+    const { categoryId } = req.params;
     const { name } = req.body;
     const update = { name };
-    let query = { _id: id };
+    let query = { _id: categoryId };
     let category = await category_1.default.findOneAndUpdate(query, update, {
         new: true,
     });
@@ -38,8 +38,8 @@ const updateCategory = (0, express_async_handler_1.default)(async (req, res) => 
 });
 exports.updateCategory = updateCategory;
 const deleteCategory = (0, express_async_handler_1.default)(async (req, res) => {
-    const { id } = req.query;
-    let query = { _id: id };
+    const { categoryId } = req.params;
+    let query = { _id: categoryId };
     category_1.default.findOneAndDelete(query)
         .then((category) => {
         res.status(200).json(category);

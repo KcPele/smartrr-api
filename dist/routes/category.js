@@ -8,8 +8,8 @@ const category_1 = require("../controllers/category");
 const middleware_1 = require("../middleware");
 const router = express_1.default.Router();
 router.get("/", category_1.getAllCategory);
-router.post("/", middleware_1.tokenMiddleware, category_1.createCategory);
+router.post("/:categoryId", middleware_1.tokenMiddleware, category_1.createCategory);
 router.put("/", middleware_1.tokenMiddleware, category_1.updateCategory);
-router.delete("/", middleware_1.tokenMiddleware, category_1.deleteCategory);
+router.delete("/:categoryId", middleware_1.tokenMiddleware, category_1.deleteCategory);
 exports.default = router;
 //# sourceMappingURL=category.js.map

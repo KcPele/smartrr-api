@@ -8,7 +8,8 @@ import productRoutes from "./routes/products";
 import videoRoutes from "./routes/video";
 import categoryRoute from "./routes/category";
 import imageDeleteRoute from "./routes/deleteImage";
-import multer, { Multer } from "multer";
+import orderRoute from "./routes/order";
+
 dotenv.config();
 
 declare global {
@@ -64,9 +65,10 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRoutes);
+app.use("/orders", orderRoute);
 app.use("/videos", videoRoutes);
-app.use("/remove", imageDeleteRoute);
 app.use("/products", productRoutes);
+app.use("/remove", imageDeleteRoute);
 app.use("/categories", categoryRoute);
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
