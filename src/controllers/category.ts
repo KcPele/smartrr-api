@@ -29,12 +29,11 @@ const createCategory = asyncHandler(
 
 const updateCategory = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { id } = req.query;
+    const { categoryId } = req.params;
     const { name } = req.body;
     const update = { name } as unknown as ICategory;
-  
 
-    let query = { _id: id };
+    let query = { _id: categoryId };
     let category = await Category.findOneAndUpdate(query, update, {
       new: true,
     });
@@ -44,8 +43,8 @@ const updateCategory = asyncHandler(
 
 const deleteCategory = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { id } = req.query;
-    let query = { _id: id };
+    const { categoryId } = req.params;
+    let query = { _id: categoryId };
     Category.findOneAndDelete(query)
       .then((category) => {
         res.status(200).json(category);

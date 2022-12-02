@@ -20,7 +20,8 @@ const getProduct = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.getProduct = getProduct;
 const createProduct = (0, express_async_handler_1.default)(async (req, res) => {
-    const { name, price, description } = req.body;
+    let { name, price, productType, items, description } = req.body;
+    console.log(items);
     let imgUrl = [];
     if (req.files) {
         let files = req.files;
@@ -34,6 +35,8 @@ const createProduct = (0, express_async_handler_1.default)(async (req, res) => {
         const product = await product_1.default.create({
             name,
             price,
+            productType,
+            items,
             imgUrl,
             description,
             owner,
@@ -48,8 +51,17 @@ exports.createProduct = createProduct;
 const updateProduct = (0, express_async_handler_1.default)(async (req, res) => {
     var _a;
     let id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.productId;
-    const { name, price, description } = req.body;
-    const update = { name, price, description };
+    const { name, productType, items, rating, price, description } = req.body;
+    const update = {
+        name,
+        price,
+        productType,
+        rating,
+        description,
+    };
+    if (items) {
+        update.items = items;
+    }
     if (req.files) {
         let product = await product_1.default.findById(id);
         let imgLength = product === null || product === void 0 ? void 0 : product.imgUrl.length;

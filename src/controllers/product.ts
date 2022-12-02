@@ -22,7 +22,9 @@ const getProduct = asyncHandler(
 
 const createProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { name, price, description } = req.body;
+    let { name, price, productType, items, description } = req.body;
+
+    console.log(items);
     let imgUrl = [];
     if (req.files) {
       let files = req.files as any[];
@@ -39,6 +41,8 @@ const createProduct = asyncHandler(
       const product = await Product.create({
         name,
         price,
+        productType,
+        items,
         imgUrl,
         description,
         owner,
@@ -53,8 +57,17 @@ const createProduct = asyncHandler(
 const updateProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     let id = req.params?.productId;
-    const { name, price, description } = req.body;
-    const update = { name, price, description } as unknown as IProduct;
+    const { name, productType, items, rating, price, description } = req.body;
+    const update = {
+      name,
+      price,
+      productType,
+      rating,
+      description,
+    } as unknown as IProduct;
+    if (items) {
+      update.items = items;
+    }
     if (req.files) {
       let product = await Product.findById(id);
       let imgLength = product?.imgUrl.length as Number;
