@@ -20,8 +20,7 @@ const getProduct = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.getProduct = getProduct;
 const createProduct = (0, express_async_handler_1.default)(async (req, res) => {
-    let { name, price, productType, items, description } = req.body;
-    console.log(items);
+    let { name, price, productType, productItems, description } = req.body;
     let imgUrl = [];
     if (req.files) {
         let files = req.files;
@@ -29,6 +28,17 @@ const createProduct = (0, express_async_handler_1.default)(async (req, res) => {
             ...acc,
             { key: image.key, url: image.location, imgName: image.originalname },
         ], []);
+    }
+    let items = [];
+    if (productItems) {
+        let productItem = JSON.parse(productItems);
+        productItem === null || productItem === void 0 ? void 0 : productItem.map((val) => {
+            items.push({
+                item: val.item,
+                price: val.price,
+                quantity: val.quantity,
+            });
+        });
     }
     try {
         const owner = await user_1.default.findById(req.userId);
@@ -87,7 +97,6 @@ exports.updateProduct = updateProduct;
 const deleteProduct = (0, express_async_handler_1.default)(async (req, res) => {
     var _a;
     let id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.productId;
-    console.log(id);
     let query = { _id: id, owner: req.userId };
     product_1.default.findOneAndDelete(query)
         .then((product) => {

@@ -20,11 +20,15 @@ const getProduct = asyncHandler(
   }
 );
 
+interface IItem {
+  price: string;
+  item: string;
+  quantity: string;
+}
 const createProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    let { name, price, productType, items, description } = req.body;
+    let { name, price, productType, productItems, description } = req.body;
 
-    console.log(items);
     let imgUrl = [];
     if (req.files) {
       let files = req.files as any[];
@@ -35,6 +39,18 @@ const createProduct = asyncHandler(
         ],
         []
       );
+    }
+    let items: IItem[] = [];
+    if (productItems) {
+      let productItem = JSON.parse(productItems);
+
+      productItem?.map((val: IItem) => {
+        items.push({
+          item: val.item,
+          price: val.price,
+          quantity: val.quantity,
+        });
+      });
     }
     try {
       const owner = await User.findById(req.userId);
@@ -95,7 +111,6 @@ const updateProduct = asyncHandler(
 const deleteProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     let id = req.params?.productId;
-    console.log(id);
 
     let query = { _id: id, owner: req.userId };
     Product.findOneAndDelete(query)

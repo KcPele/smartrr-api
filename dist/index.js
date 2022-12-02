@@ -36,6 +36,7 @@ const products_1 = __importDefault(require("./routes/products"));
 const video_1 = __importDefault(require("./routes/video"));
 const category_1 = __importDefault(require("./routes/category"));
 const deleteImage_1 = __importDefault(require("./routes/deleteImage"));
+const deleteProductItems_1 = __importDefault(require("./routes/deleteProductItems"));
 const order_1 = __importDefault(require("./routes/order"));
 dotenv.config();
 mongoose_1.default
@@ -83,6 +84,7 @@ app.use("/videos", video_1.default);
 app.use("/products", products_1.default);
 app.use("/remove", deleteImage_1.default);
 app.use("/categories", category_1.default);
+app.use("/remove-item", deleteProductItems_1.default);
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });

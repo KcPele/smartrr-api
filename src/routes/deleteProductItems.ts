@@ -1,23 +1,21 @@
 import express from "express";
 import Product from "../modals/product";
 
-import { s3DeleteHelper, tokenMiddleware } from "../middleware";
+import { tokenMiddleware } from "../middleware";
 import asyncHandler from "express-async-handler";
 const router = express.Router();
 router.delete(
   "/",
   tokenMiddleware,
   asyncHandler(async (req: express.Request, res: express.Response) => {
-    const { productId, imgKey, imgId } = req.query;
-
+    const { productId, itemId } = req.query;
     Product.updateOne(
       { _id: productId },
-      { $pull: { imgUrl: { _id: imgId } } },
+      { $pull: { items: { _id: itemId } } },
       function (err: any, numAffected: any) {
         if (err) {
           res.status(400).json(err);
         } else {
-          s3DeleteHelper(imgKey as string);
           res.status(200).json("successful");
         }
       }

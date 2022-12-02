@@ -14,6 +14,7 @@ const productSchema = new mongoose_1.Schema({
         {
             item: { type: String },
             price: { type: String },
+            quantity: { type: String },
         },
     ],
     imgUrl: [
