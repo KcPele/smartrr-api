@@ -5,11 +5,7 @@ const productSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     price: { type: String },
     rating: { type: Number, default: 0 },
-    productType: {
-        type: String,
-        default: "single",
-        enum: ["single", "multiple"],
-    },
+    productType: { type: String, required: true },
     items: [
         {
             item: { type: String },

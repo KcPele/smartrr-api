@@ -73,32 +73,41 @@ const createProduct = asyncHandler(
 const updateProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     let id = req.params?.productId;
-    const { name, productType, items, rating, price, description } = req.body;
+    const { name, productItems, rating, price, description } = req.body;
     const update = {
       name,
       price,
-      productType,
       rating,
       description,
     } as unknown as IProduct;
-    if (items) {
-      update.items = items;
+
+    let productUpdate = await Product.findById(id);
+    if (productItems) {
+      let productItem = JSON.parse(productItems);
+
+      productItem?.map((val: IItem) => {
+        productUpdate?.items.push({
+          item: val.item,
+          price: val.price,
+          quantity: val.quantity,
+        });
+      });
     }
+
     if (req.files) {
-      let product = await Product.findById(id);
-      let imgLength = product?.imgUrl.length as Number;
+      let imgLength = productUpdate?.imgUrl.length as Number;
       if (imgLength > 5)
         res.status(400).json({ error: "Cannot upload more than 5 images" });
       let files = req.files as any[];
       files.map((image) => {
-        product?.imgUrl.push({
+        productUpdate?.imgUrl.push({
           key: image.key,
           url: image.location,
           imgName: image.originalname,
         });
       });
-      product?.save();
     }
+    productUpdate?.save();
 
     let query = { _id: id, owner: req.userId };
     let product = await Product.findOneAndUpdate(query, update, {
