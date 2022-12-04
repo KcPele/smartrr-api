@@ -61,32 +61,38 @@ exports.createProduct = createProduct;
 const updateProduct = (0, express_async_handler_1.default)(async (req, res) => {
     var _a;
     let id = (_a = req.params) === null || _a === void 0 ? void 0 : _a.productId;
-    const { name, productType, items, rating, price, description } = req.body;
+    const { name, productItems, rating, price, description } = req.body;
     const update = {
         name,
         price,
-        productType,
         rating,
         description,
     };
-    if (items) {
-        update.items = items;
+    let productUpdate = await product_1.default.findById(id);
+    if (productItems) {
+        let productItem = JSON.parse(productItems);
+        productItem === null || productItem === void 0 ? void 0 : productItem.map((val) => {
+            productUpdate === null || productUpdate === void 0 ? void 0 : productUpdate.items.push({
+                item: val.item,
+                price: val.price,
+                quantity: val.quantity,
+            });
+        });
     }
     if (req.files) {
-        let product = await product_1.default.findById(id);
-        let imgLength = product === null || product === void 0 ? void 0 : product.imgUrl.length;
+        let imgLength = productUpdate === null || productUpdate === void 0 ? void 0 : productUpdate.imgUrl.length;
         if (imgLength > 5)
             res.status(400).json({ error: "Cannot upload more than 5 images" });
         let files = req.files;
         files.map((image) => {
-            product === null || product === void 0 ? void 0 : product.imgUrl.push({
+            productUpdate === null || productUpdate === void 0 ? void 0 : productUpdate.imgUrl.push({
                 key: image.key,
                 url: image.location,
                 imgName: image.originalname,
             });
         });
-        product === null || product === void 0 ? void 0 : product.save();
     }
+    productUpdate === null || productUpdate === void 0 ? void 0 : productUpdate.save();
     let query = { _id: id, owner: req.userId };
     let product = await product_1.default.findOneAndUpdate(query, update, {
         new: true,
