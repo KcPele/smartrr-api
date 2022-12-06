@@ -71,13 +71,26 @@ const updateProduct = (0, express_async_handler_1.default)(async (req, res) => {
     let productUpdate = await product_1.default.findById(id);
     if (productItems) {
         let productItem = JSON.parse(productItems);
-        productItem === null || productItem === void 0 ? void 0 : productItem.map((val) => {
-            productUpdate === null || productUpdate === void 0 ? void 0 : productUpdate.items.push({
-                item: val.item,
-                price: val.price,
-                quantity: val.quantity,
+        let newItems = productItem.filter((item) => !item._id);
+        let oldItems = productItem.filter((item) => item._id);
+        if (oldItems) {
+            oldItems.forEach(async (element) => {
+                await product_1.default.findOneAndUpdate({ _id: id, "items._id": element._id }, {
+                    $set: {
+                        "items.$": element,
+                    },
+                });
             });
-        });
+        }
+        if (newItems) {
+            newItems === null || newItems === void 0 ? void 0 : newItems.map((val) => {
+                productUpdate === null || productUpdate === void 0 ? void 0 : productUpdate.items.push({
+                    item: val.item,
+                    price: val.price,
+                    quantity: val.quantity,
+                });
+            });
+        }
     }
     if (req.files) {
         let imgLength = productUpdate === null || productUpdate === void 0 ? void 0 : productUpdate.imgUrl.length;
