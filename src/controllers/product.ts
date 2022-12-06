@@ -1,5 +1,5 @@
 import express from "express";
-import mongoose, { Types } from "mongoose";
+import mongoose, { MongooseError, Types } from "mongoose";
 import User from "../modals/user";
 import asyncHandler from "express-async-handler";
 
@@ -24,6 +24,7 @@ interface IItem {
   price: string;
   item: string;
   quantity: string;
+  _id?: string;
 }
 const createProduct = asyncHandler(
   async (req: express.Request, res: express.Response) => {
@@ -84,14 +85,30 @@ const updateProduct = asyncHandler(
     let productUpdate = await Product.findById(id);
     if (productItems) {
       let productItem = JSON.parse(productItems);
+      let newItems = productItem.filter((item: IItem) => !item._id);
+      let oldItems = productItem.filter((item: IItem) => item._id);
 
-      productItem?.map((val: IItem) => {
-        productUpdate?.items.push({
-          item: val.item,
-          price: val.price,
-          quantity: val.quantity,
+      if (oldItems) {
+        oldItems.forEach(async (element: IItem) => {
+          await Product.findOneAndUpdate(
+            { _id: id, "items._id": element._id },
+            {
+              $set: {
+                "items.$": element,
+              },
+            }
+          );
         });
-      });
+      }
+      if (newItems) {
+        newItems?.map((val: IItem) => {
+          productUpdate?.items.push({
+            item: val.item,
+            price: val.price,
+            quantity: val.quantity,
+          });
+        });
+      }
     }
 
     if (req.files) {
