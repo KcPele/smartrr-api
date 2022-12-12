@@ -18,7 +18,7 @@ const getAnOrder = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.getAnOrder = getAnOrder;
 const createOrder = (0, express_async_handler_1.default)(async (req, res) => {
-    const { name, userId, email, paymentRef, status, phoneNumber } = req.body;
+    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, address, majorLandmark, } = req.body;
     try {
         const order = await order_1.default.create({
             name,
@@ -27,6 +27,10 @@ const createOrder = (0, express_async_handler_1.default)(async (req, res) => {
             paymentRef,
             status,
             phoneNumber,
+            state,
+            localGovernmentArea,
+            address,
+            majorLandmark,
         });
         res.status(200).json(order);
     }
@@ -37,7 +41,7 @@ const createOrder = (0, express_async_handler_1.default)(async (req, res) => {
 exports.createOrder = createOrder;
 const updateOrder = (0, express_async_handler_1.default)(async (req, res) => {
     const { orderId } = req.params;
-    const { name, userId, email, paymentRef, status, phoneNumber } = req.body;
+    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, address, majorLandmark, } = req.body;
     const update = {
         name,
         userId,
@@ -45,6 +49,10 @@ const updateOrder = (0, express_async_handler_1.default)(async (req, res) => {
         paymentRef,
         status,
         phoneNumber,
+        state,
+        localGovernmentArea,
+        address,
+        majorLandmark,
     };
     let query = { _id: orderId };
     let order = await order_1.default.findOneAndUpdate(query, update, {

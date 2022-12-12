@@ -6,6 +6,10 @@ const orderSchema = new mongoose_1.Schema({
     userId: { type: String, required: true },
     email: { type: String, required: true },
     paymentRef: { type: String, required: true },
+    state: { type: String, required: true },
+    localGovernmentArea: { type: String, required: true },
+    address: { type: String, required: true },
+    majorLandmark: { type: String, required: true },
     status: {
         type: String,
         default: "processing",
