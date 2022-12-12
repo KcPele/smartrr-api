@@ -21,7 +21,18 @@ const getAnOrder = asyncHandler(
 
 const createOrder = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    const { name, userId, email, paymentRef, status, phoneNumber } = req.body;
+    const {
+      name,
+      userId,
+      email,
+      paymentRef,
+      status,
+      phoneNumber,
+      state,
+      localGovernmentArea,
+      address,
+      majorLandmark,
+    } = req.body;
     try {
       const order = await Order.create({
         name,
@@ -30,6 +41,10 @@ const createOrder = asyncHandler(
         paymentRef,
         status,
         phoneNumber,
+        state,
+        localGovernmentArea,
+        address,
+        majorLandmark,
       });
       res.status(200).json(order);
     } catch (err: any) {
@@ -41,7 +56,18 @@ const createOrder = asyncHandler(
 const updateOrder = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { orderId } = req.params;
-    const { name, userId, email, paymentRef, status, phoneNumber } = req.body;
+    const {
+      name,
+      userId,
+      email,
+      paymentRef,
+      status,
+      phoneNumber,
+      state,
+      localGovernmentArea,
+      address,
+      majorLandmark,
+    } = req.body;
     const update = {
       name,
       userId,
@@ -49,6 +75,10 @@ const updateOrder = asyncHandler(
       paymentRef,
       status,
       phoneNumber,
+      state,
+      localGovernmentArea,
+      address,
+      majorLandmark,
     } as unknown as IOrder;
 
     let query = { _id: orderId };
