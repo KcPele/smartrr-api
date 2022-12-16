@@ -5,9 +5,14 @@ import asyncHandler from "express-async-handler";
 
 import Order, { IOrder } from "../modals/order";
 
+import jwt from "jsonwebtoken";
+const privateKey = process.env.PRIVATE_KEY;
+const orderKey = process.env.ORDER_PRIVATE_KEY;
+
 const getAllOrder = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     let orders = (await Order.find({})) as [IOrder?];
+    // console.log(jwt.sign({ orderKey }, privateKey as string));
     res.status(200).json({ orders });
   }
 );

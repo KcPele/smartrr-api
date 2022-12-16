@@ -6,8 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateOrder = exports.deleteOrder = exports.createOrder = exports.getAnOrder = exports.getAllOrder = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const order_1 = __importDefault(require("../modals/order"));
+const privateKey = process.env.PRIVATE_KEY;
+const orderKey = process.env.ORDER_PRIVATE_KEY;
 const getAllOrder = (0, express_async_handler_1.default)(async (req, res) => {
     let orders = (await order_1.default.find({}));
+    // console.log(jwt.sign({ orderKey }, privateKey as string));
     res.status(200).json({ orders });
 });
 exports.getAllOrder = getAllOrder;
