@@ -1,4 +1,5 @@
 import express from "express";
+import { orderTokenMiddleware } from "../middleware";
 import {
   getAllOrder,
   getAnOrder,
@@ -12,8 +13,8 @@ const router = express.Router();
 router.get("/", getAllOrder);
 
 router.get("/:orderId", getAnOrder);
-router.post("/", createOrder);
-router.put("/:orderId", updateOrder);
-router.delete("/:orderId", deleteOrder);
+router.post("/", orderTokenMiddleware, createOrder);
+router.put("/:orderId", orderTokenMiddleware, updateOrder);
+router.delete("/:orderId", orderTokenMiddleware, deleteOrder);
 
 export default router;
