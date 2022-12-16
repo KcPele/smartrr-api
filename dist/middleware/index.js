@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tokenMiddleware = exports.upload = exports.uploadVideo = exports.s3DeleteHelper = exports.s3Config = void 0;
+exports.orderTokenMiddleware = exports.tokenMiddleware = exports.upload = exports.uploadVideo = exports.s3DeleteHelper = exports.s3Config = void 0;
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const aws_sdk_1 = __importDefault(require("aws-sdk"));
@@ -89,7 +89,7 @@ const tokenMiddleware = async (req, res, next) => {
     const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
     try {
         const userId = jsonwebtoken_1.default.verify(token, process.env.PRIVATE_KEY);
-        let user = await user_1.default.findById(userId._id);
+        let user = await user_1.default.findById(userId === null || userId === void 0 ? void 0 : userId._id);
         if (!user) {
             res.status(400).json({ error: "wrong credentials" });
         }
@@ -105,4 +105,23 @@ const tokenMiddleware = async (req, res, next) => {
     }
 };
 exports.tokenMiddleware = tokenMiddleware;
+const orderTokenMiddleware = async (req, res, next) => {
+    var _a, _b;
+    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
+    try {
+        const val = jsonwebtoken_1.default.verify(token, process.env.PRIVATE_KEY);
+        if (((_b = val === null || val === void 0 ? void 0 : val.orderKey) === null || _b === void 0 ? void 0 : _b.toString()) !== process.env.ORDER_PRIVATE_KEY) {
+            res.status(400).json({ error: "not a valid token" });
+        }
+        else {
+            next();
+        }
+    }
+    catch (error) {
+        // console.log(error)
+        let errors = error;
+        res.status(500).json({ error: errors.message });
+    }
+};
+exports.orderTokenMiddleware = orderTokenMiddleware;
 //# sourceMappingURL=index.js.map
