@@ -21,7 +21,7 @@ const getAnOrder = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.getAnOrder = getAnOrder;
 const createOrder = (0, express_async_handler_1.default)(async (req, res) => {
-    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, address, majorLandmark, } = req.body;
+    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, productId, productName, deliveryFee, totalAmount, address, majorLandmark, } = req.body;
     try {
         const order = await order_1.default.create({
             name,
@@ -32,6 +32,10 @@ const createOrder = (0, express_async_handler_1.default)(async (req, res) => {
             phoneNumber,
             state,
             localGovernmentArea,
+            productId,
+            productName,
+            deliveryFee,
+            totalAmount,
             address,
             majorLandmark,
         });
@@ -44,7 +48,7 @@ const createOrder = (0, express_async_handler_1.default)(async (req, res) => {
 exports.createOrder = createOrder;
 const updateOrder = (0, express_async_handler_1.default)(async (req, res) => {
     const { orderId } = req.params;
-    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, address, majorLandmark, } = req.body;
+    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, productId, productName, deliveryFee, totalAmount, address, majorLandmark, } = req.body;
     const update = {
         name,
         userId,
@@ -54,6 +58,10 @@ const updateOrder = (0, express_async_handler_1.default)(async (req, res) => {
         phoneNumber,
         state,
         localGovernmentArea,
+        productId,
+        productName,
+        deliveryFee,
+        totalAmount,
         address,
         majorLandmark,
     };

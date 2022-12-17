@@ -8,6 +8,10 @@ const orderSchema = new Schema(
     state: { type: String, required: true },
     localGovernmentArea: { type: String, required: true },
     address: { type: String, required: true },
+    productId: { type: String, required: true },
+    productName: { type: String, required: true },
+    deliveryFee: { type: String, required: true },
+    totalAmount: { type: Number, required: true },
     majorLandmark: { type: String, required: true },
 
     status: {
