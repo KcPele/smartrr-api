@@ -35,6 +35,10 @@ const createOrder = asyncHandler(
       phoneNumber,
       state,
       localGovernmentArea,
+      productId,
+      productName,
+      deliveryFee,
+      totalAmount,
       address,
       majorLandmark,
     } = req.body;
@@ -48,6 +52,10 @@ const createOrder = asyncHandler(
         phoneNumber,
         state,
         localGovernmentArea,
+        productId,
+        productName,
+        deliveryFee,
+        totalAmount,
         address,
         majorLandmark,
       });
@@ -70,6 +78,10 @@ const updateOrder = asyncHandler(
       phoneNumber,
       state,
       localGovernmentArea,
+      productId,
+      productName,
+      deliveryFee,
+      totalAmount,
       address,
       majorLandmark,
     } = req.body;
@@ -82,6 +94,10 @@ const updateOrder = asyncHandler(
       phoneNumber,
       state,
       localGovernmentArea,
+      productId,
+      productName,
+      deliveryFee,
+      totalAmount,
       address,
       majorLandmark,
     } as unknown as IOrder;
