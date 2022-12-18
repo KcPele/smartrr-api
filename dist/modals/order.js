@@ -12,7 +12,7 @@ const orderSchema = new mongoose_1.Schema({
     productId: { type: String, required: true },
     productName: { type: String, required: true },
     deliveryFee: { type: String, required: true },
-    totalAmount: { type: Number, required: true },
+    totalAmount: { type: String, required: true },
     majorLandmark: { type: String, required: true },
     status: {
         type: String,
