@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProduct = exports.getAllProduct = void 0;
-const user_1 = __importDefault(require("../modals/user"));
+const user_1 = __importDefault(require("../models/user"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const product_1 = __importDefault(require("../modals/product"));
+const product_1 = __importDefault(require("../models/product"));
 const middleware_1 = require("../middleware");
 const getAllProduct = (0, express_async_handler_1.default)(async (req, res) => {
     let products = await product_1.default.find({}).sort({ updatedAt: -1 });

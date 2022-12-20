@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateCategory = exports.deleteCategory = exports.createCategory = exports.getAllCategory = void 0;
-const user_1 = __importDefault(require("../modals/user"));
+const user_1 = __importDefault(require("../models/user"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const category_1 = __importDefault(require("../modals/category"));
+const category_1 = __importDefault(require("../models/category"));
 const getAllCategory = (0, express_async_handler_1.default)(async (req, res) => {
     let categories = (await category_1.default.find({}));
     res.status(200).json({ categories });

@@ -3,18 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOrder = exports.deleteOrder = exports.createOrder = exports.getAnOrder = exports.getAllOrder = void 0;
+exports.updateOrder = exports.deleteOrder = exports.getAnOrder = exports.getAllOrder = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const order_1 = __importDefault(require("../modals/order"));
-const privateKey = process.env.PRIVATE_KEY;
-const orderKey = process.env.ORDER_PRIVATE_KEY;
+const order_1 = __importDefault(require("../models/order"));
 const getAllOrder = (0, express_async_handler_1.default)(async (req, res) => {
     let searchQuery = {};
     if (req.query.userId) {
         searchQuery.userId = req.query.userId;
     }
     let orders = await order_1.default.find(searchQuery);
-    // console.log(jwt.sign({ orderKey }, privateKey as string));
     res.status(200).json({ orders });
 });
 exports.getAllOrder = getAllOrder;
@@ -24,50 +21,11 @@ const getAnOrder = (0, express_async_handler_1.default)(async (req, res) => {
     res.status(200).json({ order });
 });
 exports.getAnOrder = getAnOrder;
-const createOrder = (0, express_async_handler_1.default)(async (req, res) => {
-    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, productId, productName, deliveryFee, totalAmount, address, majorLandmark, } = req.body;
-    try {
-        const order = await order_1.default.create({
-            name,
-            userId,
-            email,
-            paymentRef,
-            status,
-            phoneNumber,
-            state,
-            localGovernmentArea,
-            productId,
-            productName,
-            deliveryFee,
-            totalAmount,
-            address,
-            majorLandmark,
-        });
-        res.status(200).json(order);
-    }
-    catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-exports.createOrder = createOrder;
 const updateOrder = (0, express_async_handler_1.default)(async (req, res) => {
     const { orderId } = req.params;
-    const { name, userId, email, paymentRef, status, phoneNumber, state, localGovernmentArea, productId, productName, deliveryFee, totalAmount, address, majorLandmark, } = req.body;
+    const { status } = req.body;
     const update = {
-        name,
-        userId,
-        email,
-        paymentRef,
         status,
-        phoneNumber,
-        state,
-        localGovernmentArea,
-        productId,
-        productName,
-        deliveryFee,
-        totalAmount,
-        address,
-        majorLandmark,
     };
     let query = { _id: orderId };
     let order = await order_1.default.findOneAndUpdate(query, update, {

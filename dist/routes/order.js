@@ -9,8 +9,7 @@ const order_1 = require("../controllers/order");
 const router = express_1.default.Router();
 router.get("/", order_1.getAllOrder);
 router.get("/:orderId", order_1.getAnOrder);
-router.post("/", middleware_1.orderTokenMiddleware, order_1.createOrder);
-router.put("/:orderId", middleware_1.orderTokenMiddleware, order_1.updateOrder);
-router.delete("/:orderId", middleware_1.orderTokenMiddleware, order_1.deleteOrder);
+router.put("/:orderId", middleware_1.tokenMiddleware, order_1.updateOrder);
+router.delete("/:orderId", middleware_1.tokenMiddleware, order_1.deleteOrder);
 exports.default = router;
 //# sourceMappingURL=order.js.map

@@ -8,7 +8,7 @@ exports.loginUser = exports.createNewUser = void 0;
 // dotenv.config();
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const user_1 = __importDefault(require("../modals/user"));
+const user_1 = __importDefault(require("../models/user"));
 const privateKey = process.env.PRIVATE_KEY;
 async function createNewUser(email, password) {
     //were to use bycript an jsonwebtokek

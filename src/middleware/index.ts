@@ -91,29 +91,3 @@ export const tokenMiddleware = async (
     res.status(500).json({ error: errors.message });
   }
 };
-
-export const orderTokenMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  const token = req.headers.authorization?.split(" ")[1] as string;
-  try {
-    const val = jwt.verify(
-      token,
-      process.env.PRIVATE_KEY as string
-    ) as jwt.JwtPayload;
-
-    if (
-      val?.orderKey?.toString() !== (process.env.ORDER_PRIVATE_KEY as string)
-    ) {
-      res.status(400).json({ error: "not a valid token" });
-    } else {
-      next();
-    }
-  } catch (error: any) {
-    // console.log(error)
-    let errors = error as JsonWebTokenError;
-    res.status(500).json({ error: errors.message });
-  }
-};

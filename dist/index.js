@@ -38,6 +38,7 @@ const category_1 = __importDefault(require("./routes/category"));
 const deleteImage_1 = __importDefault(require("./routes/deleteImage"));
 const deleteProductItems_1 = __importDefault(require("./routes/deleteProductItems"));
 const order_1 = __importDefault(require("./routes/order"));
+const webhook_1 = __importDefault(require("./routes/webhook"));
 dotenv.config();
 mongoose_1.default
     .connect(process.env.MONGODB_URL)
@@ -70,13 +71,6 @@ const PORT = parseInt(process.env.PORT, 10);
 const app = (0, express_1.default)();
 app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)());
-// {
-//   allowedHeaders: ["sessionId", "Content-Type"],
-//   exposedHeaders: ["sessionId"],
-//   origin: "*",
-//   methods: "GET,HEAD,PUT,POST,DELETE",
-//   preflightContinue: false,
-// }
 app.use(express_1.default.json());
 app.use("/user", user_1.default);
 app.use("/orders", order_1.default);
@@ -85,6 +79,7 @@ app.use("/products", products_1.default);
 app.use("/remove", deleteImage_1.default);
 app.use("/categories", category_1.default);
 app.use("/remove-item", deleteProductItems_1.default);
+app.use("/webhooks", webhook_1.default);
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });

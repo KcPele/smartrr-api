@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVideo = exports.updateVideo = exports.createVideo = exports.getVideo = exports.getAllVideo = void 0;
-const user_1 = __importDefault(require("../modals/user"));
+const user_1 = __importDefault(require("../models/user"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const video_1 = __importDefault(require("../modals/video"));
+const video_1 = __importDefault(require("../models/video"));
 const middleware_1 = require("../middleware");
 const getAllVideo = (0, express_async_handler_1.default)(async (req, res) => {
     let searchQuery = {};

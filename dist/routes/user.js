@@ -32,7 +32,7 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const user_1 = __importDefault(require("../modals/user"));
+const user_1 = __importDefault(require("../models/user"));
 const privateKey = process.env.PRIVATE_KEY;
 const allowRegistration = process.env.ALLOW_REGISTRATION;
 const router = express_1.default.Router();

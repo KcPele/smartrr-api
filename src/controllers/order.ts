@@ -1,13 +1,8 @@
 import express from "express";
 
-import User from "../models/user";
 import asyncHandler from "express-async-handler";
 
 import Order, { IOrder } from "../models/order";
-
-import jwt from "jsonwebtoken";
-const privateKey = process.env.PRIVATE_KEY;
-const orderKey = process.env.ORDER_PRIVATE_KEY;
 
 const getAllOrder = asyncHandler(
   async (req: express.Request, res: express.Response) => {
@@ -17,7 +12,7 @@ const getAllOrder = asyncHandler(
       searchQuery.userId = req.query.userId;
     }
     let orders = await Order.find(searchQuery);
-    // console.log(jwt.sign({ orderKey }, privateKey as string));
+
     res.status(200).json({ orders });
   }
 );
@@ -29,82 +24,12 @@ const getAnOrder = asyncHandler(
   }
 );
 
-const createOrder = asyncHandler(
-  async (req: express.Request, res: express.Response) => {
-    const {
-      name,
-      userId,
-      email,
-      paymentRef,
-      status,
-      phoneNumber,
-      state,
-      localGovernmentArea,
-      productId,
-      productName,
-      deliveryFee,
-      totalAmount,
-      address,
-      majorLandmark,
-    } = req.body;
-    try {
-      const order = await Order.create({
-        name,
-        userId,
-        email,
-        paymentRef,
-        status,
-        phoneNumber,
-        state,
-        localGovernmentArea,
-        productId,
-        productName,
-        deliveryFee,
-        totalAmount,
-        address,
-        majorLandmark,
-      });
-      res.status(200).json(order);
-    } catch (err: any) {
-      res.status(500).json({ error: err.message as Error });
-    }
-  }
-);
-
 const updateOrder = asyncHandler(
   async (req: express.Request, res: express.Response) => {
     const { orderId } = req.params;
-    const {
-      name,
-      userId,
-      email,
-      paymentRef,
-      status,
-      phoneNumber,
-      state,
-      localGovernmentArea,
-      productId,
-      productName,
-      deliveryFee,
-      totalAmount,
-      address,
-      majorLandmark,
-    } = req.body;
+    const { status } = req.body;
     const update = {
-      name,
-      userId,
-      email,
-      paymentRef,
       status,
-      phoneNumber,
-      state,
-      localGovernmentArea,
-      productId,
-      productName,
-      deliveryFee,
-      totalAmount,
-      address,
-      majorLandmark,
     } as unknown as IOrder;
 
     let query = { _id: orderId };
@@ -129,4 +54,4 @@ const deleteOrder = asyncHandler(
   }
 );
 
-export { getAllOrder, getAnOrder, createOrder, deleteOrder, updateOrder };
+export { getAllOrder, getAnOrder, deleteOrder, updateOrder };
