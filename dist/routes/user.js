@@ -34,6 +34,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_1 = __importDefault(require("../modals/user"));
 const privateKey = process.env.PRIVATE_KEY;
+const allowRegistration = process.env.ALLOW_REGISTRATION;
 const router = express_1.default.Router();
 router.post("/login", (0, express_async_handler_1.default)(async (req, res) => {
     const { email, password } = req.body;
@@ -55,13 +56,18 @@ router.post("/login", (0, express_async_handler_1.default)(async (req, res) => {
     }
 }));
 router.post("/register", (0, express_async_handler_1.default)(async (req, res) => {
-    const { email, password } = req.body;
-    if (password.length < 6) {
-        res.status(400).json({ error: "Password must be up to 6 characters" });
+    if (allowRegistration === "false") {
+        res.status(400).json({ errors: "registration is closed" });
     }
     else {
-        const user = await user_1.default.createNewUser(email, password);
-        res.status(200).json(user);
+        const { email, password } = req.body;
+        if (password.length < 6) {
+            res.status(400).json({ error: "Password must be up to 6 characters" });
+        }
+        else {
+            const user = await user_1.default.createNewUser(email, password);
+            res.status(200).json(user);
+        }
     }
 }));
 exports.default = router;
