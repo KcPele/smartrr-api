@@ -36,7 +36,7 @@ const client_s3_1 = require("@aws-sdk/client-s3");
 const multer_s3_1 = __importDefault(require("multer-s3"));
 const user_1 = __importDefault(require("../modals/user"));
 exports.s3Config = new client_s3_1.S3Client({
-    region: "us-west-1",
+    region: process.env.S3_BUCKET_REGION,
     credentials: {
         accessKeyId: process.env.S3_ACCESS_KEY,
         secretAccessKey: process.env.S3_ACCESS_SECRET,
@@ -45,7 +45,7 @@ exports.s3Config = new client_s3_1.S3Client({
 const s3 = new aws_sdk_1.default.S3({
     accessKeyId: process.env.S3_ACCESS_KEY,
     secretAccessKey: process.env.S3_ACCESS_SECRET,
-    region: "us-west-1",
+    region: process.env.S3_BUCKET_REGION,
 });
 const s3DeleteHelper = (key) => {
     s3.deleteObject({
@@ -61,7 +61,7 @@ exports.s3DeleteHelper = s3DeleteHelper;
 exports.uploadVideo = (0, multer_1.default)({
     storage: (0, multer_s3_1.default)({
         s3: exports.s3Config,
-        bucket: "mini-test-dashboard",
+        bucket: process.env.s3_BUCKET,
         contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
         metadata: function (req, file, cb) {
             cb(null, { fieldName: file.fieldname });

@@ -39,7 +39,7 @@ export const s3DeleteHelper = (key: string) => {
 export const uploadVideo = multer({
   storage: multerS3({
     s3: s3Config,
-    bucket: "mini-test-dashboard",
+    bucket: process.env.s3_BUCKET as string,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
