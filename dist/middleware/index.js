@@ -49,7 +49,7 @@ const s3 = new aws_sdk_1.default.S3({
 });
 const s3DeleteHelper = (key) => {
     s3.deleteObject({
-        Bucket: process.env.s3_BUCKET,
+        Bucket: process.env.S3_BUCKET,
         Key: key,
     }, (err, data) => {
         if (err) {
@@ -61,7 +61,7 @@ exports.s3DeleteHelper = s3DeleteHelper;
 exports.uploadVideo = (0, multer_1.default)({
     storage: (0, multer_s3_1.default)({
         s3: exports.s3Config,
-        bucket: process.env.s3_BUCKET,
+        bucket: process.env.S3_BUCKET,
         contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
         metadata: function (req, file, cb) {
             cb(null, { fieldName: file.fieldname });
@@ -74,7 +74,7 @@ exports.uploadVideo = (0, multer_1.default)({
 exports.upload = (0, multer_1.default)({
     storage: (0, multer_s3_1.default)({
         s3: exports.s3Config,
-        bucket: "mini-test-dashboard",
+        bucket: process.env.S3_BUCKET,
         contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
         metadata: function (req, file, cb) {
             cb(null, { fieldName: file.fieldname });
