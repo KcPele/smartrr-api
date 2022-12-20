@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../modals/user";
 const privateKey = process.env.PRIVATE_KEY;
-
+const allowRegistration = process.env.ALLOW_REGISTRATION as string;
 const router = express.Router();
 
 router.post(
@@ -32,12 +32,16 @@ router.post(
 router.post(
   "/register",
   asyncHandler(async (req: express.Request, res: express.Response) => {
-    const { email, password } = req.body;
-    if (password.length < 6) {
-      res.status(400).json({ error: "Password must be up to 6 characters" });
+    if (allowRegistration === "false") {
+      res.status(400).json({ errors: "registration is closed" });
     } else {
-      const user = await User.createNewUser(email, password);
-      res.status(200).json(user);
+      const { email, password } = req.body;
+      if (password.length < 6) {
+        res.status(400).json({ error: "Password must be up to 6 characters" });
+      } else {
+        const user = await User.createNewUser(email, password);
+        res.status(200).json(user);
+      }
     }
   })
 );
