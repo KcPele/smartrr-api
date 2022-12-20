@@ -11,7 +11,12 @@ const orderKey = process.env.ORDER_PRIVATE_KEY;
 
 const getAllOrder = asyncHandler(
   async (req: express.Request, res: express.Response) => {
-    let orders = (await Order.find({})) as [IOrder?];
+    let searchQuery: any = {};
+
+    if (req.query.userId) {
+      searchQuery.userId = req.query.userId;
+    }
+    let orders = await Order.find(searchQuery);
     // console.log(jwt.sign({ orderKey }, privateKey as string));
     res.status(200).json({ orders });
   }
