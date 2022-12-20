@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose, { MongooseError, Types } from "mongoose";
-import User from "../modals/user";
+import User from "../models/user";
 import asyncHandler from "express-async-handler";
 
-import Product, { IProduct } from "../modals/product";
+import Product, { IProduct } from "../models/product";
 import { s3DeleteHelper } from "../middleware";
 
 const getAllProduct = asyncHandler(

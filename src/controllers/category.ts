@@ -1,9 +1,9 @@
 import express from "express";
 
-import User from "../modals/user";
+import User from "../models/user";
 import asyncHandler from "express-async-handler";
 
-import Category, { ICategory } from "../modals/category";
+import Category, { ICategory } from "../models/category";
 
 const getAllCategory = asyncHandler(
   async (req: express.Request, res: express.Response) => {

@@ -13,13 +13,11 @@ const orderSchema = new Schema(
     deliveryFee: { type: String, required: true },
     totalAmount: { type: String, required: true },
     majorLandmark: { type: String, required: true },
-
     status: {
       type: String,
       default: "processing",
       enum: ["processing", "shipped", "delivered"],
     },
-
     phoneNumber: { type: String, required: true },
   },
   { timestamps: true }
