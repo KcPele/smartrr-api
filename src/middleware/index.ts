@@ -9,7 +9,7 @@ import multerS3 from "multer-s3";
 import User from "../modals/user";
 
 export const s3Config = new S3Client({
-  region: "us-west-1",
+  region: process.env.S3_BUCKET_REGION as string,
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY as string,
     secretAccessKey: process.env.S3_ACCESS_SECRET as string,
@@ -19,7 +19,7 @@ export const s3Config = new S3Client({
 const s3 = new aws.S3({
   accessKeyId: process.env.S3_ACCESS_KEY as string,
   secretAccessKey: process.env.S3_ACCESS_SECRET as string,
-  region: "us-west-1",
+  region: process.env.S3_BUCKET_REGION as string,
 });
 
 export const s3DeleteHelper = (key: string) => {
