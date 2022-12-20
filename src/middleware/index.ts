@@ -6,7 +6,7 @@ import { Request, NextFunction, Response } from "express";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { S3Client } from "@aws-sdk/client-s3";
 import multerS3 from "multer-s3";
-import User from "../modals/user";
+import User from "../models/user";
 
 export const s3Config = new S3Client({
   region: process.env.S3_BUCKET_REGION as string,

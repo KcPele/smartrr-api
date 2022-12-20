@@ -1,5 +1,5 @@
 import express from "express";
-import Product from "../modals/product";
+import Product from "../models/product";
 
 import { tokenMiddleware } from "../middleware";
 import asyncHandler from "express-async-handler";

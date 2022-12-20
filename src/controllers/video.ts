@@ -1,11 +1,11 @@
 import express from "express";
 
-import User from "../modals/user";
+import User from "../models/user";
 import asyncHandler from "express-async-handler";
 
-import Video, { IVideo } from "../modals/video";
+import Video, { IVideo } from "../models/video";
 import { s3DeleteHelper } from "../middleware";
-import Category from "../modals/category";
+import Category from "../models/category";
 
 const getAllVideo = asyncHandler(
   async (req: express.Request, res: express.Response) => {

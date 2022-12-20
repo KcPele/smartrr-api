@@ -1,9 +1,9 @@
 import express from "express";
 
-import User from "../modals/user";
+import User from "../models/user";
 import asyncHandler from "express-async-handler";
 
-import Order, { IOrder } from "../modals/order";
+import Order, { IOrder } from "../models/order";
 
 import jwt from "jsonwebtoken";
 const privateKey = process.env.PRIVATE_KEY;

@@ -10,6 +10,8 @@ import categoryRoute from "./routes/category";
 import imageDeleteRoute from "./routes/deleteImage";
 import productItemRoute from "./routes/deleteProductItems";
 import orderRoute from "./routes/order";
+import webhookRoute from "./routes/webhook";
+
 dotenv.config();
 
 declare global {
@@ -71,6 +73,7 @@ app.use("/products", productRoutes);
 app.use("/remove", imageDeleteRoute);
 app.use("/categories", categoryRoute);
 app.use("/remove-item", productItemRoute);
+app.use("/webhooks", webhookRoute);
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });

@@ -2,7 +2,7 @@
 // dotenv.config();
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../modals/user";
+import User from "../models/user";
 import { MongooseError } from "mongoose";
 const privateKey = process.env.PRIVATE_KEY;
 

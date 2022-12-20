@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../modals/user";
+import User from "../models/user";
 const privateKey = process.env.PRIVATE_KEY;
 const allowRegistration = process.env.ALLOW_REGISTRATION as string;
 const router = express.Router();
