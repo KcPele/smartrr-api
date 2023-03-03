@@ -50,6 +50,20 @@ export const uploadVideo = multer({
   }),
 });
 
+export const uploadCourse = multer({
+  storage: multerS3({
+    s3: s3Config,
+    bucket: process.env.S3_BUCKET as string,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, "course/" + Date.now().toString() + "-" + file.originalname);
+    },
+  }),
+});
+
 export const upload = multer({
   storage: multerS3({
     s3: s3Config,

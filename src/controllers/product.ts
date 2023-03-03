@@ -112,7 +112,7 @@ const updateProduct = asyncHandler(
     }
 
     if (req.files) {
-      let imgLength = productUpdate?.imgUrl.length as Number;
+      let imgLength = productUpdate?.imgUrl.length as number;
       if (imgLength > 5)
         res.status(400).json({ error: "Cannot upload more than 5 images" });
       let files = req.files as any[];
