@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose, { MongooseError, Types } from "mongoose";
 import User from "../models/user";
 import asyncHandler from "express-async-handler";
 
